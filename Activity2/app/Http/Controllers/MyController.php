@@ -54,12 +54,13 @@ class MyController extends Controller
         $resultColor = getResultColor($result); //same din dito pero para naman sa result
 
         //ito naman yung result na ipapakita nya, HTML na may styles para maipakita yung kulay and yung text format
+        //dun sa may result, gumamit lang ng span para sa ibat ibang part nung result para mailagay ng maayos yung mga variable na kailangan para dun sa mga style nung text 
         return "
         <h2>BARRIENTOS, Renz Jordan N. BSIT - 3B</h2>
         <p>Value 1: <span style='color: $num1Color; font-weight: bold;'>$num1</span></p>
         <p>Value 2: <span style='color: $num2Color; font-weight: bold;'>$num2</span></p>
         <p>Operator: $operator</p>
-        <b style='color: $resultColor'>Result (Displayed in: <span style='text-transform: uppercase'>$resultColor</span>): <span style='background-color: $resultColor; width:40px; color:white; width: 50px; height:50px'>$result</span></b>
+        <b style='color: $resultColor'>Result (Displayed in: <span style='text-transform: uppercase'>$resultColor</span>): <span style='background-color: $resultColor; color:white;'>$result</span></b>
         ";
     }
 }
