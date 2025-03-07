@@ -5,141 +5,153 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Form</title>
+    <title>Bootstrap Form</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #000;
+            /* Pitch black background */
+            color: white;
+        }
+
+        .card-custom {
+            background-color: #121212;
+            /* Slightly lighter black for the card */
+            border: 1px solid red;
+            /* Red border */
+        }
+
+        .form-control {
+            background-color: #343a40 !important;
+            /* Dark gray fields */
+            color: white !important;
+            border: 1px solid red !important;
+        }
+    </style>
 </head>
 
 <body>
-    <h1>Personal Information</h1>
-    <hr>
-    @if (session('success'))
-        <h4 style="color:green">{{ session('success') }}</h4>
-        <hr>
-    @endif
 
-    @if ($errors->any())
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li style="color:red">{{ $error }}</li>
-            @endforeach
-        </ul>
-    @endif
+    <div class="container mt-5">
+        <div class="card card-custom shadow p-4 text-white">
+            <h2 class="text-center text-danger">Personal Information</h2>
+            <hr class="border-danger">
 
-    <form action="/" method="post">
-        @csrf
-        <table>
-            <tr>
-                <td>First Name</td>
-                <td><input type="text" name="firstName" value="{{ old('firstName') }}"></td>
-                <td>
-                    @error('firstName')
-                        <div class="text-red-500 text-sm">
-                            <p style="color: red;">{{ $message }}</p>
-                        </div>
-                    @enderror
-                </td>
-            </tr>
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-            <tr>
-                <td>Last Name</td>
-                <td><input type="text" name="lastName" value="{{ old('lastName') }}"></td>
-                <td>
-                    @error('lastName')
-                        <div class="text-red-500 text-sm">
-                            <p style="color: red;">{{ $message }}</p>
-                        </div>
-                    @enderror
-                </td>
-            </tr>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-            <tr>
-                <td>Sex</td>
-                <td>
+            <form action="/" method="post">
+                @csrf
 
-                    <input type="radio" name="sex" id="male" value="male">Male
-                    <input type="radio" name="sex" id="female" value="female">Female
-                </td>
-            </tr>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><b>First Name</b></label>
+                        <input type="text" name="firstName" class="form-control" value="{{ old('firstName') }}">
+                        @error('firstName')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-            <tr>
-                <td>Mobile Phone</td>
-                <td><input type="text" name="mobilePhone" value="{{ old('mobilePhone') }}"></td>
-                <td>
-                    @error('mobilePhone')
-                        <div class="text-red-500 text-sm">
-                            <p style="color: red;">{{ $message }}</p>
-                        </div>
-                    @enderror
-                </td>
-            </tr>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><b>Last Name</b></label>
+                        <input type="text" name="lastName" class="form-control" value="{{ old('lastName') }}">
+                        @error('lastName')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
 
-            <tr>
-                <td>Tel No.</td>
-                <td><input type="tel" name="telNo" value="{{ old('telNo') }}"></td>
-                <td>
-                    @error('telNo')
-                        <div class="text-red-500 text-sm">
-                            <p style="color: red;">{{ $message }}</p>
-                        </div>
-                    @enderror
-                </td>
-            </tr>
+                <div class="mb-3">
+                    <label class="form-label d-block"><b>Sex</b></label>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" name="sex" id="male" value="male" class="form-check-input">
+                        <label for="male" class="form-check-label">Male</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" name="sex" id="female" value="female" class="form-check-input">
+                        <label for="female" class="form-check-label">Female</label>
+                    </div>
+                </div>
 
-            <tr>
-                <td>Birth date</td>
-                <td><input type="date" name="birthDate" value="{{ old('birthDate', date('Y-m-d')) }}"></td>
-                <td>
-                    @error('birthDate')
-                        <div class="text-red-500 text-sm">
-                            <p style="color: red;">{{ $message }}</p>
-                        </div>
-                    @enderror
-                </td>
-            </tr>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><b>Mobile Phone</b></label>
+                        <input type="text" name="mobilePhone" class="form-control" value="{{ old('mobilePhone') }}">
+                        @error('mobilePhone')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-            <tr>
-                <td>Address</td>
-                <td><input type="text" name="address" value="{{ old('address') }}"></td>
-                <td>
-                    @error('address')
-                        <div class="text-red-500 text-sm">
-                            <p style="color: red;">{{ $message }}</p>
-                        </div>
-                    @enderror
-                </td>
-            </tr>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><b>Tel No.</b></label>
+                        <input type="tel" name="telNo" class="form-control" value="{{ old('telNo') }}">
+                        @error('telNo')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
 
-            <tr>
-                <td>Email</td>
-                <td><input type="email" name="email" value="{{ old('email') }}"></td>
-                <td>
-                    @error('email')
-                        <div class="text-red-500 text-sm">
-                            <p style="color: red;">{{ $message }}</p>
-                        </div>
-                    @enderror
-                </td>
-            </tr>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><b>Birth Date</b></label>
+                        <input type="date" name="birthDate" class="form-control"
+                            value="{{ old('birthDate', date('Y-m-d')) }}">
+                        @error('birthDate')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-            <tr>
-                <td>Website</td>
-                <td><input type="text" name="website" value="{{ old('website') }}"></td>
-                <td>
-                    @error('website')
-                        <div class="text-red-500 text-sm">
-                            <p style="color: red;">{{ $message }}</p>
-                        </div>
-                    @enderror
-                </td>
-            </tr>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><b>Address</b></label>
+                        <input type="text" name="address" class="form-control" value="{{ old('address') }}">
+                        @error('address')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
 
-            <tr>
-                <td colspan="3">
-                    <button type="submit">Submit</button>
-                </td>
-            </tr>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><b>Email</b></label>
+                        <input type="email" name="email" class="form-control" value="{{ old('email') }}">
+                        @error('email')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-        </table>
-    </form>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label"><b>Website</b></label>
+                        <input type="text" name="website" class="form-control" value="{{ old('website') }}">
+                        @error('website')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-danger px-5">Submit</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
