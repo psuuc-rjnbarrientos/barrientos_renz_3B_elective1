@@ -50,7 +50,7 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-warning w-100">Update Project</button>
+                    <button type="submit" class="btn btn-warning d-block mx-auto px-5">Update Project</button>
                 </form>
 
                 <div class="text-center mt-3">

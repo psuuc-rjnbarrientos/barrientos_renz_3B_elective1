@@ -34,7 +34,7 @@
                     @csrf
 
                     <div class="mb-3">
-                        <label class="form-label">Name:</label>
+                        <label class="form-label">Name: <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
                         @error('name')
                             <p style="color: red;">{{ $message }}</p>
@@ -42,7 +42,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Email:</label>
+                        <label class="form-label">Email: <span class="text-danger">*</span></label>
                         <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
                         @error('email')
                             <p style="color: red;">{{ $message }}</p>
@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Password:</label>
+                        <label class="form-label">Password: <span class="text-danger">*</span></label>
                         <input type="password" name="password" class="form-control" value="{{ old('password') }}" required>
                         @error('password')
                             <p style="color: red;">{{ $message }}</p>
@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Confirm Password:</label>
+                        <label class="form-label">Confirm Password: <span class="text-danger">*</span></label>
                         <input type="password" name="password_confirmation" class="form-control"
                             value="{{ old('password') }}" required>
                     </div>

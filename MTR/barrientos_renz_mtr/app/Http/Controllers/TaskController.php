@@ -4,23 +4,35 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class TaskController extends Controller
 {
-    // Show all tasks for a project
-    public function index($projectId)
+    public function index($projectId, Request $request)
     {
-        // Fetch the project from the database
         $project = DB::select("SELECT * FROM projects WHERE id = ?", [$projectId]);
         if (!$project) {
             return redirect()->route('projects.index')->with('error', 'Project not found!');
         }
-        $project = $project[0]; // DB::select returns an array, take the first item
+        $project = $project[0];
 
-        // Fetch tasks related to this project from the database
-        $tasks = DB::select("SELECT * FROM tasks WHERE project_id = ?", [$projectId]);
+        $perPage = 10;
+        $page = $request->get('page', 1);
 
-        return view('tasks.index', ['project' => $project, 'tasks' => $tasks]);
+        $total = DB::selectOne("SELECT COUNT(*) as total FROM tasks WHERE project_id = ?", [$projectId])->total;
+
+        $offset = ($page - 1) * $perPage;
+
+        $tasks = DB::select("SELECT * FROM tasks WHERE project_id = ? LIMIT ? OFFSET ?", [$projectId, $perPage, $offset]);
+
+        $paginatedTasks = new LengthAwarePaginator(
+            $tasks,
+            $total,
+            $perPage,
+            $page,
+            ['path' => route('tasks.index', $projectId)]
+        );
+        return view('tasks.index', compact('project', 'paginatedTasks'));
     }
 
     // Show form to create a new task
@@ -57,9 +69,9 @@ class TaskController extends Controller
 
         // Insert task into database, including created_by
         DB::insert("
-        INSERT INTO tasks (project_id, title, description, due_date, status, created_by, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())
-    ", [
+            INSERT INTO tasks (project_id, title, description, due_date, status, created_by, created_at, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())
+        ", [
             $projectId,
             $request->input('title'),
             $request->input('description'),

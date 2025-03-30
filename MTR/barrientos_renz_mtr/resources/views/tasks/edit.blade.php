@@ -13,26 +13,28 @@
                     @method('PUT') {{-- Laravel requires this for PUT/PATCH requests --}}
 
                     <div class="mb-3">
-                        <label class="form-label">Task Title:</label>
+                        <label class="form-label">Task Title: <span class="text-danger">*</span></label>
                         <input type="text" name="title" class="form-control" value="{{ $task->title }}" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Description:</label>
+                        <label class="form-label">Description: <span class="text-danger">*</span></label>
                         <textarea name="description" class="form-control">{{ $task->description }}</textarea>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Due Date:</label>
+                        <label class="form-label">Due Date: <span class="text-danger">*</span></label>
                         <input type="date" name="due_date" class="form-control" value="{{ $task->due_date }}">
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Status:</label>
+                        <label class="form-label">Status: <span class="text-danger">*</span></label>
                         <select name="status" class="form-select" required>
                             <option value="pending" {{ $task->status == 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="in-progress" {{ $task->status == 'in-progress' ? 'selected' : '' }}>In Progress</option>
-                            <option value="completed" {{ $task->status == 'completed' ? 'selected' : '' }}>Completed</option>
+                            <option value="in-progress" {{ $task->status == 'in-progress' ? 'selected' : '' }}>In Progress
+                            </option>
+                            <option value="completed" {{ $task->status == 'completed' ? 'selected' : '' }}>Completed
+                            </option>
                             <option value="blocked" {{ $task->status == 'blocked' ? 'selected' : '' }}>Blocked</option>
                         </select>
                     </div>

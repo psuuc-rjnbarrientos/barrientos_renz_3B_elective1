@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProjectController extends Controller
 {
@@ -16,20 +17,40 @@ class ProjectController extends Controller
         return null;
     }
 
-    // 📌 Show all projects for the logged-in user
-    public function index()
+    public function index(Request $request)
     {
         if ($redirect = $this->checkAuth()) return $redirect;
 
         $user = session('user');
 
-        // Fetch projects where the user is the creator OR assigned
-        $projects = DB::table('projects')
-            ->where('created_by', $user->id)
-            ->orWhere('assigned_to', $user->id)
-            ->get();
+        // Define items per page
+        $perPage = 10;
+        $page = $request->get('page', 1); // Get current page from query string, default to 1
 
-        return view('projects.index', compact('projects'));
+        // Build the base query
+        $query = DB::table('projects')
+            ->where('created_by', $user->id)
+            ->orWhere('assigned_to', $user->id);
+
+        // Get total count
+        $total = $query->count();
+
+        // Calculate offset
+        $offset = ($page - 1) * $perPage;
+
+        // Fetch paginated projects
+        $projects = $query->skip($offset)->take($perPage)->get();
+
+        // Create a paginator instance
+        $paginatedProjects = new LengthAwarePaginator(
+            $projects,           // Items for the current page
+            $total,              // Total items
+            $perPage,            // Items per page
+            $page,               // Current page
+            ['path' => route('projects.index')] // Base URL for pagination links
+        );
+
+        return view('projects.index', compact('paginatedProjects'));
     }
 
     // 📌 Show the create project form

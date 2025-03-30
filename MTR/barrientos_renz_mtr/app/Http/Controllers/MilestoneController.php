@@ -4,19 +4,37 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class MilestoneController extends Controller
 {
-    public function index($projectId)
+    public function index($projectId, Request $request)
     {
         $project = DB::select("SELECT * FROM projects WHERE id = ?", [$projectId]);
         if (!$project) {
             return redirect()->route('projects.index')->with('error', 'Project not found!');
         }
+        $project = $project[0];
 
-        $milestones = DB::select("SELECT * FROM milestones WHERE project_id = ?", [$projectId]);
+        $perPage = 10;
+        $page = $request->get('page', 1); 
 
-        return view('milestones.index', ['project' => $project[0], 'milestones' => $milestones]);
+        $total = DB::selectOne("SELECT COUNT(*) as total FROM milestones WHERE project_id = ?", [$projectId])->total;
+
+        $offset = ($page - 1) * $perPage;
+
+        $milestones = DB::select("SELECT * FROM milestones WHERE project_id = ? LIMIT ? OFFSET ?", [$projectId, $perPage, $offset]);
+
+        $paginatedMilestones = new LengthAwarePaginator(
+            $milestones,      
+            $total,             
+            $perPage,           
+            $page,               
+            ['path' => route('milestones.index', $projectId)] 
+        );
+
+        // Use compact() to pass $paginatedMilestones, mirroring ProjectController
+        return view('milestones.index', compact('project', 'paginatedMilestones'));
     }
 
     public function create($projectId)

@@ -5,7 +5,8 @@
 @section('content')
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <h1 class="text-center mb-4 fs-3">Create Task for <br> <span class="text-primary">{{ $project->name }}</span></h1>
+            <h1 class="text-center mb-4 fs-3">Create Task</h1>
+            <p class="text-center text-primary">{{ $project->name }}</p>
 
             @if ($errors->any())
                 <div class="alert alert-danger">
@@ -22,22 +23,22 @@
                     @csrf
 
                     <div class="mb-3">
-                        <label class="form-label">Task Title:</label>
+                        <label class="form-label">Task Title: <span class="text-danger">*</span></label>
                         <input type="text" name="title" class="form-control" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Description:</label>
+                        <label class="form-label">Description: <span class="text-danger">*</span></label>
                         <textarea name="description" class="form-control"></textarea>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Due Date:</label>
+                        <label class="form-label">Due Date: <span class="text-danger">*</span></label>
                         <input type="date" name="due_date" class="form-control">
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Status:</label>
+                        <label class="form-label">Status: <span class="text-danger">*</span></label>
                         <select name="status" class="form-select" required>
                             <option value="pending">Pending</option>
                             <option value="in-progress">In Progress</option>

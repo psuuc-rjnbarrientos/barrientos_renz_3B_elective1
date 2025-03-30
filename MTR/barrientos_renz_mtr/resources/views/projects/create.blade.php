@@ -21,27 +21,27 @@
                     @csrf
 
                     <div class="mb-3">
-                        <label class="form-label">Project Name:</label>
+                        <label class="form-label">Project Name: <span class="text-danger">*</span></label>
                         <input type="text" name="name" class="form-control" required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Description:</label>
+                        <label class="form-label">Description: <span class="text-danger">*</span></label>
                         <textarea name="description" class="form-control"></textarea>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Start Date:</label>
+                        <label class="form-label">Start Date: <span class="text-danger">*</span></label>
                         <input type="date" name="start_date" class="form-control">
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">End Date:</label>
+                        <label class="form-label">End Date: <span class="text-danger">*</span></label>
                         <input type="date" name="end_date" class="form-control">
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Priority:</label>
+                        <label class="form-label">Priority: <span class="text-danger">*</span></label>
                         <select name="priority" class="form-select" required>
                             <option value="low">Low</option>
                             <option value="medium">Medium</option>
@@ -50,7 +50,7 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-success d-block mx-auto">Create Project</button>
+                    <button type="submit" class="btn btn-success d-block mx-auto px-5">Create Project</button>
                 </form>
 
                 <div class="text-center mt-3">

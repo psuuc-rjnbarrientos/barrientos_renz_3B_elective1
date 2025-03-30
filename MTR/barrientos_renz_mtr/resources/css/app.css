@@ -10,7 +10,16 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
+.navbar-brand:hover, .nav-link:hover { color: #ffd700; }
+
 .table td, .table th { padding: 1rem; }
 
 .btn:hover { transform: scale(1.05); transition: transform 0.2s; }
 .card { border-radius: 10px; }
+
+.table-hover tbody tr:hover { background-color: #f1f5f9; }
+
+.card { background: linear-gradient(135deg, #f8f9fa, #e9ecef); }
+
+.card:hover { box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+
