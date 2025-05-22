@@ -12,46 +12,48 @@ class WeatherController extends Controller
         $cities = ['Tokyo', 'New York', $city];
         $apiKey = env('OPENWEATHER_API_KEY');
         $weatherData = [];
+        $countryData = [];
 
         foreach ($cities as $cityName) {
-            $response = Http::get("https://api.openweathermap.org/data/2.5/weather", [
+            $weatherResponse = Http::get("https://api.openweathermap.org/data/2.5/weather", [
                 'q' => $cityName,
                 'appid' => $apiKey,
                 'units' => 'metric',
             ]);
 
-            if ($response->successful()) {
+            if ($weatherResponse->successful()) {
+                $weatherJson = $weatherResponse->json();
                 $weatherData[$cityName] = [
-                    'temperature' => $response->json()['main']['temp'],
-                    'description' => $response->json()['weather'][0]['description'],
-                    'humidity' => $response->json()['main']['humidity'],
+                    'temperature' => $weatherJson['main']['temp'],
+                    'description' => $weatherJson['weather'][0]['description'],
+                    'humidity' => $weatherJson['main']['humidity'],
                 ];
+
+                $countryCode = $weatherJson['sys']['country'] ?? null;
+
+                if ($countryCode) {
+                    $countryResponse = Http::get('https://restcountries.com/v3.1/alpha/' . $countryCode);
+
+                    if ($countryResponse->successful() && !empty($countryResponse->json())) {
+                        $countryJson = $countryResponse->json()[0];
+                        $countryData[$cityName] = [
+                            'country' => $countryJson['name']['common'],
+                            'capital' => isset($countryJson['capital']) ? $countryJson['capital'][0] : 'N/A',
+                            'population' => $countryJson['population'] ?? 'N/A',
+                            'flag' => $countryJson['flags']['png'] ?? null,
+                        ];
+                    } else {
+                        $countryData[$cityName] = null;
+                    }
+                } else {
+                    $countryData[$cityName] = null;
+                }
             } else {
                 $weatherData[$cityName] = null;
-            }
-        }
-
-        $countries = [
-            'New York' => 'United States of America',
-            'Tokyo' => 'Japan',
-            $city => ($city === 'London' ? 'United Kingdom' : $city)
-        ];
-        $countryData = [];
-
-        foreach ($countries as $cityName => $countryName) {
-            $response = Http::get('https://restcountries.com/v3.1/name/' . urlencode($countryName));
-            if ($response->successful() && !empty($response->json())) {
-                $data = $response->json()[0];
-                $countryData[$cityName] = [
-                    'country' => $data['name']['common'],
-                    'capital' => isset($data['capital']) ? $data['capital'][0] : 'N/A',
-                    'population' => $data['population'] ?? 'N/A',
-                    'flag' => $data['flags']['png'] ?? null,
-                ];
-            } else {
                 $countryData[$cityName] = null;
             }
         }
+
         return view('weather', compact('weatherData', 'countryData'));
     }
 }

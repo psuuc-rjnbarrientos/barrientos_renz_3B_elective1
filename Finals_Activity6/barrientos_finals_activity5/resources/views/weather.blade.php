@@ -13,13 +13,13 @@
         <h1 class="text-3xl font-bold text-center mb-6">Weather & Country Dashboard</h1>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             @foreach ($weatherData as $city => $weather)
-                <div class="bg-gray p-6 rounded-lg shadow-md">
+                <div class="bg-white p-6 rounded-lg shadow-md">
                     <h2 class="text-xl font-semibold mb-2">{{ $city }}</h2>
                     <h3 class="text-lg font-medium mt-4">Weather</h3>
                     @if ($weather)
                         <p class="text-lg">Temperature: {{ $weather['temperature'] }}°C</p>
                         <p class="text-lg">Description: {{ ucfirst($weather['description']) }}</p>
-                        <p class="text-lg">Humidity: {{ $weather['humidity'] }}</p>
+                        <p class="text-lg">Humidity: {{ $weather['humidity'] }}%</p>
                     @else
                         <p class="text-red-500 text-base">Unable to fetch weather data for {{ $city }}.</p>
                     @endif
@@ -30,13 +30,13 @@
                         <p class="text-base">Capital: {{ $countryData[$city]['capital'] }}</p>
                         <p class="text-base">Population: {{ number_format($countryData[$city]['population']) }}</p>
                         @if ($countryData[$city]['flag'])
-                            <img src="{{ $countryData[$city]['flag'] }}" alt="Flag" class="mx-auto h-12 mt-2">
+                            <img src="{{ $countryData[$city]['flag'] }}"
+                                alt="Flag of {{ $countryData[$city]['country'] }}" class="mx-auto h-12 mt-2">
                         @else
                             <p class="text-gray-500 text-base">No flag available</p>
                         @endif
                     @else
-                        <p class="text-red-500 text-base">Unable to fetch country data for
-                            {{ $countries[$city] ?? $city }}.</p>
+                        <p class="text-red-500 text-base">Unable to fetch country data for {{ $city }}.</p>
                     @endif
                 </div>
             @endforeach
