@@ -13,7 +13,7 @@
         <h1 class="text-3xl font-bold text-center mb-6">Weather & Country Dashboard</h1>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             @foreach ($weatherData as $city => $weather)
-                <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="bg-red-100 p-6 rounded-lg shadow-md">
                     <h2 class="text-xl font-semibold mb-2">{{ $city }}</h2>
                     <h3 class="text-lg font-medium mt-4">Weather</h3>
                     @if ($weather)
