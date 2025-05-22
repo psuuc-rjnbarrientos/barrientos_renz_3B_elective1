@@ -30,6 +30,28 @@ class WeatherController extends Controller
                 $weatherData[$cityName] = null;
             }
         }
-        return view('weather', compact('weatherData'));
+
+        $countries = [
+            'New York' => 'United States of America',
+            'Tokyo' => 'Japan',
+            $city => ($city === 'London' ? 'United Kingdom' : $city)
+        ];
+        $countryData = [];
+
+        foreach ($countries as $cityName => $countryName) {
+            $response = Http::get('https://restcountries.com/v3.1/name/' . urlencode($countryName));
+            if ($response->successful() && !empty($response->json())) {
+                $data = $response->json()[0];
+                $countryData[$cityName] = [
+                    'country' => $data['name']['common'],
+                    'capital' => isset($data['capital']) ? $data['capital'][0] : 'N/A',
+                    'population' => $data['population'] ?? 'N/A',
+                    'flag' => $data['flags']['png'] ?? null,
+                ];
+            } else {
+                $countryData[$cityName] = null;
+            }
+        }
+        return view('weather', compact('weatherData', 'countryData'));
     }
 }
